@@ -1,14 +1,29 @@
-package com.test.scheduler.controller;
+package com.test.scheduler.schedule;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.test.scheduler.schedule.response.ScheduleResultResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ScheduleController {
 
-    @GetMapping("/")
-    public String helloWorld() {
-        return "Olá mundo!";
+    @Autowired
+    ScheduleService service;
+
+    @PostMapping("/schedule")
+    public Schedule newSchedule(@RequestBody Schedule body) {
+        return this.service.saveSchedule(body);
+    }
+
+    @GetMapping("/schedule/{scheduleId}")
+    public ScheduleResultResponse getResult(@PathVariable("scheduleId") Integer scheduleId) {
+        return this.service.getScheduleResult(scheduleId);
+    };
+
+    @GetMapping("/schedule")
+    public Page<Schedule> findAllPaginated(@RequestParam("page") Integer page) {
+        return this.service.findAllPaginated(page);
     }
 
 }
