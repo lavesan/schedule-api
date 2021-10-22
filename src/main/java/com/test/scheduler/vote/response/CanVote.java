@@ -1,2 +1,5 @@
-package com.test.scheduler.vote.response;public interface CanVote {
+package com.test.scheduler.vote.response;
+
+public interface CanVote {
+    String getCpf();
 }
