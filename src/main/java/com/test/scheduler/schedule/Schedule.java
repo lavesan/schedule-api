@@ -1,26 +1,49 @@
-package com.test.scheduler.model;
+package com.test.scheduler.schedule;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.test.scheduler.session.Session;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "sc_schedule")
-@SequenceGenerator(name = "seq_schedule", sequenceName = "seq_schedule", allocationSize = 1, initialValue = 1)
-public class ScheduleRepository implements Serializable {
+public class Schedule implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_schedule")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sc_id", nullable = false)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "title", nullable = true, length = 50)
+    @Column(name = "title", length = 50)
     private String title;
 
-    public Long getId() {
+    @JsonManagedReference
+    @OneToMany(mappedBy = "schedule")
+    private Set<Session> sessions;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
